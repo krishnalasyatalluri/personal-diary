@@ -1,35 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './dashboard.css'; 
-import NewEntryPopup from '../NewEntryForm/index'; 
-import EditEntryPopup from '../EditEntryPopup'; 
+import './dashboard.css';
+import NewEntryPopup from '../NewEntryForm/index';
+import EditEntryPopup from '../EditEntryPopup';
+import FilterByMoodPopup from '../FilterByMoodPopup';
 
-function Dashboard() {
+const Dashboard = () => {
   const [entries, setEntries] = useState([]);
-  const [mood, setMood] = useState('');
-  const [tags, setTags] = useState('');
-  const [date, setDate] = useState('');
-  const [showPopup, setShowPopup] = useState(false); 
-  const [editingEntry, setEditingEntry] = useState(null); 
+  const [showPopup, setShowPopup] = useState(false);
+  const [editingEntry, setEditingEntry] = useState(null);
+  const [showFilterPopup, setShowFilterPopup] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    let url = 'http://localhost:5006/diary/entries';
-    if (mood || tags || date) {
-      url += `?mood=${mood}&tags=${tags}&date=${date}`;
+    fetchEntries();
+  }, [token]);
+
+  const fetchEntries = async () => {
+    try {
+      const response = await axios.get('http://localhost:5006/diary/entries', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setEntries(response.data.entries);
+    } catch (error) {
+      console.error('Error fetching entries:', error);
     }
+  };
 
-    axios.get(url, { headers: { 'Authorization': `Bearer ${token}` } })
-      .then(response => setEntries(response.data.entries))
-      .catch(error => console.error(error));
-  }, [token, mood, tags, date]);
-
-  const handleDelete = (entryId) => {
-    axios.delete(`http://localhost:5006/diary/delete-entry/${entryId}`, { headers: { 'Authorization': `Bearer ${token}` } })
-      .then(() => setEntries(entries.filter(entry => entry._id !== entryId)))
-      .catch(error => console.error('Error deleting entry:', error));
+  const handleDelete = async (entryId) => {
+    try {
+      await axios.delete(`http://localhost:5006/diary/delete-entry/${entryId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setEntries(entries.filter(entry => entry._id !== entryId));
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+    }
   };
 
   const handleLogout = () => {
@@ -42,28 +50,31 @@ function Dashboard() {
   };
 
   const handleEdit = (entry) => {
-    setEditingEntry(entry); 
+    setEditingEntry(entry);
   };
 
   const handleUpdateEntry = (updatedEntry) => {
     setEntries(entries.map(entry => (entry._id === updatedEntry._id ? updatedEntry : entry)));
-    setEditingEntry(null); 
+    setEditingEntry(null);
+  };
+
+  const handleFilter = (filteredEntries) => {
+    setEntries(filteredEntries);
   };
 
   return (
     <div className="dashboard-wrapper">
       <nav className="sidebar">
         <div className="sidebar-top">
-          <button onClick={() => navigate('/filter-by-mood')} className='filter-button1' style={{marginTop:'115px'}}>Filter by Mood</button>
-          <button onClick={() => navigate('/filter-by-date')} className='filter-button2'>Filter by Date</button>
+          <button onClick={() => setShowPopup(true)} className="new-entry-button" style={{backgroundColor:'blue',color:'white',width:'160px',height:'35px',borderRadius:'5px',marginBottom:'40px',marginTop:'60px'}}>Add New Entry</button>
         </div>
       </nav>
       <main className="content-area">
-        <div className="actions-container">
-          <button onClick={() => setShowPopup(true)} className="new-entry-button" style={{marginTop:'-80px',marginRight:'800px'}}>Add New Entry</button>
-          <button onClick={handleLogout} className="logout-button" style={{marginTop:'-80px',marginRight:'5px'}}>Logout</button>
+        <div className="">
+          <button onClick={() => setShowFilterPopup(true)} className='filter-button1' style={{backgroundColor:'blue',color:'white',width:'120px',height:'35px',borderRadius:'5px',marginRight:'400px',marginBottom:'40px'}}>Filters</button>
+          <button onClick={handleLogout} className="logout-button">Logout</button>
         </div>
-        <table className="entries-table" style={{width:'1050px',marginBottom:'70px',marginRight:'35px'}}>
+        <table className="entries-table">
           <thead>
             <tr>
               <th>Date</th>
@@ -100,9 +111,12 @@ function Dashboard() {
             onUpdateEntry={handleUpdateEntry}
           />
         )}
+        {showFilterPopup && (
+          <FilterByMoodPopup onClose={() => setShowFilterPopup(false)} onFilter={handleFilter} />
+        )}
       </main>
     </div>
   );
-}
+};
 
 export default Dashboard;

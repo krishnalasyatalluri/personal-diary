@@ -110,41 +110,7 @@ def get_current_user():
         return db.users.find_one({'_id': ObjectId(user_id)})
     except:
         return None
-# @app.route('/diary/entries', methods=['GET'])
-# def get_entries():
-#     try:
-#         entries = list(db.diary_entries.find())
-#         for entry in entries:
-#             entry['_id'] = str(entry['_id'])
-#         return jsonify({"entries": entries}), 200
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
-@app.route('/diary/entries', methods=['GET'])
-def get_entries():
-    try:
-        # Extract the token from the request headers
-        token = request.headers.get('Authorization')
-        if not token:
-            return jsonify({"error": "Authorization token is missing"}), 401
-        
-        # Decode the token to get the user ID
-        token = token.split()[1]  # Assuming the token is in the format 'Bearer <token>'
-        decoded = jwt.decode(token, 'python', algorithms=['HS256'])
-        user_id = decoded.get('user_id')
 
-        # Fetch entries for the authenticated user
-        entries = list(db.diary_entries.find({"user_id": user_id}))
-        for entry in entries:
-            entry['_id'] = str(entry['_id'])  # Convert ObjectId to string
-        
-        return jsonify({"entries": entries}), 200
-
-    except jwt.ExpiredSignatureError:
-        return jsonify({"error": "Token has expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"error": "Invalid token"}), 401
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 VALID_MOODS = {"Sad", "Happy", "Neutral"}
 @app.route('/diary/new-entry', methods=['POST'])
 def add_entry():
@@ -271,142 +237,67 @@ def delete_entry(entry_id):
         return jsonify({"error": str(e)}), 500
 
 
-# @app.route('/diary/entries/date/<start_date>/<end_date>', methods=['GET'])
-# def get_entries_by_date(start_date, end_date):
-#     try:
-#         # Validate date format
-#         try:
-#             datetime.strptime(start_date, '%Y-%m-%d')
-#             datetime.strptime(end_date, '%Y-%m-%d')
-#         except ValueError:
-#             return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
-
-#         # Get the sort order from query parameters, default to 'asc'
-#         sort_order = request.args.get('sort', 'asc')
-        
-#         # Validate sort order
-#         if sort_order not in ['asc', 'desc']:
-#             return jsonify({"error": "Invalid sort order. Use 'asc' or 'desc'."}), 400
-
-#         # Set sort direction based on the query parameter
-#         sort_direction = 1 if sort_order == 'asc' else -1
-
-#         # Query the database
-#         entries = list(db.diary_entries.find({
-#             "date": {"$gte": start_date, "$lte": end_date}
-#         }).sort("date", sort_direction))
-
-#         # Convert ObjectId to string
-#         for entry in entries:
-#             entry['_id'] = str(entry['_id'])
-        
-#         if not entries:
-#             return jsonify({"message": "No entries found for the selected date range."}), 200
-
-#         return jsonify({"entries": entries}), 200
-
-#     except Exception as e:
-#         print(f"Error in get_entries_by_date: {e}")  # Log the error for debugging
-#         return jsonify({"error": str(e)}), 500
 
 
 
 
-@app.route('/diary/entries/tags', methods=['GET'])
-def get_entries_by_tags():
+@app.route('/diary/entries', methods=['GET', 'POST'])
+def handle_entries():
     try:
-        tags = request.args.getlist('tag')
-        if not tags:
-            return jsonify({"error": "No tags provided"}), 400
-
-        entries = list(db.diary_entries.find({"tags": {"$in": tags}}))
-        for entry in entries:
-            entry['_id'] = str(entry['_id'])
-        return jsonify({"entries": entries}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route('/diary/entries/mood/<mood>', methods=['GET'])
-def get_entries_by_mood(mood):
-    try:
-        # Extract token from headers for authorization
-        token = request.headers.get('Authorization').split()[1]  # Assuming 'Bearer <token>'
-        
-        # Decode the token to extract the user_id
-        decoded = jwt.decode(token, 'python', algorithms=['HS256'])
-        user_id = decoded.get('user_id')
-
-        # Validate mood
-        if mood not in VALID_MOODS:
-            return jsonify({"error": f"Invalid mood. Valid values are {', '.join(VALID_MOODS)}"}), 400
-
-        # Fetch entries based on user_id and mood
-        entries = list(db.diary_entries.find({"user_id": user_id, "mood": mood}))
-        
-        # Convert ObjectId to string for each entry
-        for entry in entries:
-            entry['_id'] = str(entry['_id'])
-
-        return jsonify({"entries": entries}), 200
-
-    except jwt.ExpiredSignatureError:
-        return jsonify({"error": "Token has expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"error": "Invalid token"}), 401
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route('/diary/entries/date/<start_date>/<end_date>', methods=['GET'])
-def get_entries_by_date(start_date, end_date):
-    try:
-        # Extract the token from the request headers
         token = request.headers.get('Authorization')
-        if not token:
-            return jsonify({"error": "Authorization token is missing"}), 401
-        
-        # Decode the token to get the user ID
-        token = token.split()[1]  # Assuming the token is in the format 'Bearer <token>'
-        decoded = jwt.decode(token, 'python', algorithms=['HS256'])
-        user_id = decoded.get('user_id')
-        
-        # Validate date format
-        try:
-            datetime.strptime(start_date, '%Y-%m-%d')
-            datetime.strptime(end_date, '%Y-%m-%d')
-        except ValueError:
-            return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
+        if token:
+            token = token.split()[1]
+            decoded = jwt.decode(token, 'python', algorithms=['HS256'])
+            user_id = decoded.get('user_id')
+        else:
+            user_id = None
 
-        # Get the sort order from query parameters, default to 'asc'
-        sort_order = request.args.get('sort', 'asc')
-        
-        # Validate sort order
-        if sort_order not in ['asc', 'desc']:
-            return jsonify({"error": "Invalid sort order. Use 'asc' or 'desc'."}), 400
+        if request.method == 'GET':
+            if not user_id:
+                return jsonify({"error": "Authorization token is missing"}), 401
 
-        # Set sort direction based on the query parameter
-        sort_direction = 1 if sort_order == 'asc' else -1
+            entries = list(db.diary_entries.find({"user_id": user_id}))
+            for entry in entries:
+                entry['_id'] = str(entry['_id'])
 
-        # Query the database
-        entries = list(db.diary_entries.find({
-            "user_id": user_id,
-            "date": {"$gte": start_date, "$lte": end_date}
-        }).sort("date", sort_direction))
+            return jsonify({"entries": entries}), 200
 
-        # Convert ObjectId to string
-        for entry in entries:
-            entry['_id'] = str(entry['_id'])
-        
-        if not entries:
-            return jsonify({"message": "No entries found for the selected date range."}), 200
+        elif request.method == 'POST':
+            if not user_id:
+                return jsonify({"error": "Authorization token is missing"}), 401
 
-        return jsonify({"entries": entries}), 200
+            filters = request.get_json()
+            query = {"user_id": user_id}
+
+            start_date = filters.get('start_date')
+            end_date = filters.get('end_date')
+            if start_date and end_date:
+                try:
+                    datetime.strptime(start_date, '%Y-%m-%d')
+                    datetime.strptime(end_date, '%Y-%m-%d')
+                    query["date"] = {"$gte": start_date, "$lte": end_date}
+                except ValueError:
+                    return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
+
+            mood = filters.get('mood')
+            if mood:
+                valid_moods = {"Sad", "Happy", "Neutral"}
+                if mood not in valid_moods:
+                    return jsonify({"error": f"Invalid mood. Valid values are {', '.join(valid_moods)}"}), 400
+                query["mood"] = mood
+
+            entries = list(db.diary_entries.find(query))
+            for entry in entries:
+                entry['_id'] = str(entry['_id'])
+
+            return jsonify({"entries": entries}), 200
 
     except jwt.ExpiredSignatureError:
         return jsonify({"error": "Token has expired"}), 401
     except jwt.InvalidTokenError:
         return jsonify({"error": "Invalid token"}), 401
     except Exception as e:
-        print(f"Error in get_entries_by_date: {e}")  # Log the error for debugging
+        print(f"Exception: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
