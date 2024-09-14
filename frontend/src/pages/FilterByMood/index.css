@@ -1,0 +1,108 @@
+.filter-by-mood-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px; /* Width of the sidebar */
+  background: #2c3e50; /* Dark blue-gray background color */
+  padding: 20px; /* Padding inside the sidebar */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  justify-content: flex-start; /* Align items to the start */
+  border-right: 1px solid #34495e; /* Border to the right of the sidebar */
+  position: fixed; /* Fix sidebar to the left side */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Full height of the viewport */
+  color: white; /* Text color */
+}
+
+.sidebar h2 {
+  margin-top: 0; /* Remove default margin on top */
+}
+
+.filter-group {
+  margin-bottom: 20px; /* Space between each filter group */
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.logout-button {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px; /* Space from the last filter group */
+}
+
+.logout-button:hover {
+  background: #ff1a1a;
+}
+
+.content-area {
+  margin-left: 250px; /* Align content area to the right of the sidebar */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.entries-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.entries-table th,
+.entries-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.entries-table th {
+  background: #f4f4f4;
+  font-weight: bold;
+}
+
+.entries-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.entries-table tr:hover {
+  background: #f1f1f1;
+}
+
+.delete-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.delete-button:hover {
+  background: #c82333;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-top: 10px;
+}
+
+button {
+  cursor: pointer;
+}

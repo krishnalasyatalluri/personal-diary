@@ -1,0 +1,84 @@
+.new-entry-page {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .new-entry-page h2 {
+    margin-top: 0;
+  }
+  
+  .new-entry-page form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .new-entry-page label {
+    margin-bottom: 15px;
+  }
+  
+  .new-entry-page button {
+    padding: 10px;
+    border: none;
+    background: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .new-entry-page button:hover {
+    background: #0056b3;
+  }
+  /* Dashboard.css */
+
+/* General form styling */
+.form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc; /* Adjust border color to match your design */
+    border-radius: 4px; /* Adjust border-radius for rounded corners if desired */
+    box-sizing: border-box; /* Ensures padding and border are included in element's total width and height */
+  }
+  
+  /* Specific styling for the dropdown */
+  .form-group select {
+    font-size: 16px; /* Adjust font size if needed */
+    height: 40px; /* Adjust height to match other fields */
+  }
+  
+  /* Form button styling */
+  .form-buttons {
+    margin-top: 20px;
+  }
+  
+  .form-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .form-buttons button[type="submit"] {
+    background-color: #4CAF50; /* Green background for submit button */
+    color: white;
+  }
+  
+  .form-buttons button[type="button"] {
+    background-color: #f44336; /* Red background for cancel button */
+    color: white;
+  }
+  

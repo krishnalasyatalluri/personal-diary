@@ -1,0 +1,73 @@
+/* FilterByTags.css */
+
+.filter-by-tags-container {
+    padding: 20px;
+  }
+  
+  .filter-by-tags-navbar {
+    background-color: #007bff;
+    padding: 10px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .filter-by-tags-navbar .nav-button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .filter-by-tags-navbar .nav-button:hover {
+    text-decoration: underline;
+  }
+  
+  .filter-by-tags-navbar .logout-button {
+    background-color: #dc3545;
+  }
+  
+  .filter-by-tags-main {
+    margin-top: 20px;
+  }
+  
+  .filter-group {
+    margin-bottom: 20px;
+  }
+  
+  .entries-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .entries-table th, .entries-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .entries-table th {
+    background-color: #f4f4f4;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button.delete {
+    background-color: #dc3545;
+  }
+  
+  button.delete:hover {
+    background-color: #c82333;
+  }
+  

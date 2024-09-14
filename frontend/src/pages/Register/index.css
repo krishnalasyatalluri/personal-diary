@@ -1,0 +1,79 @@
+/* register.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f2f5;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+.title {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.form-group {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%; /* Full width of container */
+    max-width: 250px; /* Set maximum width */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+.register-button,
+.login-button {
+    margin-top: 1.5rem;
+    width: 100%;
+    max-width: 300px; /* Adjust the maximum width as needed */
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.register-button {
+    background-color: #007bff;
+    color: #fff;
+    margin-bottom: 1.5rem; /* Increased space below the register button */
+}
+
+.register-button:hover {
+    background-color: #0056b3;
+}
+
+.login-button {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.login-button:hover {
+    background-color: #5a6268;
+}

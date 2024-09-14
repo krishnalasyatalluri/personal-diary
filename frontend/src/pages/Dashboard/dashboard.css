@@ -1,0 +1,190 @@
+/* dashboard.css */
+
+.dashboard-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px; /* Updated width to 400px */
+  background: #2c3e50; /* Dark blue-gray background color */
+  padding: 20px; /* Adjusted padding for better spacing */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #34495e; /* Slightly darker border for better contrast */
+  position: fixed; /* Fix sidebar to the left */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Full height of the viewport */
+  color: white; /* Text color */
+}
+
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-button1,
+.filter-button2 {
+  background: #3498db; /* Bright blue background for filter buttons */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-align: center; /* Center text in button */
+}
+
+.filter-button1:hover,
+.filter-button2:hover {
+  background: #2980b9; /* Darker blue on hover */
+}
+
+.content-area {
+  margin-left: 400px; /* Align content area to the right of the sidebar */
+  padding: 20px;
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  flex-direction: column;
+  flex: 1;
+}
+
+.actions-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  margin-bottom: 20px; /* Space between buttons and table */
+  padding-right: 20px; /* Add padding to ensure space on the right side */
+}
+
+.new-entry-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 20px; /* Space between buttons */
+}
+
+.new-entry-button:hover {
+  background: #45a049;
+}
+
+.logout-button {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.logout-button:hover {
+  background: #ff1a1a;
+}
+
+.entries-table {
+  width: 700px; /* Adjust width as needed */
+  border: 1px solid black;
+}
+
+.entries-table th,
+.entries-table td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center; /* Center-aligns the content */
+}
+
+.entries-table th {
+  background: #f4f4f4;
+}
+
+.entries-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.entries-table tr:hover {
+  background: #f1f1f1;
+}
+
+.edit-button,
+.delete-button {
+  background: #007BFF;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.edit-button:hover {
+  background: #0056b3;
+}
+
+.delete-button {
+  background: #dc3545;
+}
+
+.delete-button:hover {
+  background: #c82333;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  max-width: 100%;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+button[type="button"] {
+  background-color: #6c757d;
+  color: white;
+}
